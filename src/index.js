@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (async () => {
 	// require the config file
 	require('dotenv').config();
@@ -18,8 +19,11 @@
 			 * Storage connections
 			 */
 			await sqlReadConnection.authenticate();
+			console.info('Read DB connected succefully!');
+
+			// connect to the write DB
 			await sqlWriteConnection.authenticate();
-			// eslint-disable-next-line no-console
+			console.info('Write DB connected succefully!');
 			console.info(`Listening on port ${PORT}...`);
 		} catch (err) {
 			// eslint-disable-next-line no-console
