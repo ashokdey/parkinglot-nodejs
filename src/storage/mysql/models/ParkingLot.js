@@ -14,6 +14,7 @@ ParkingLot.init({
 	},
 	bookedSlots: {
 		type: DataTypes.INTEGER,
+		defaultValue: 0,
 	},
 	mode: {
 		type: DataTypes.ENUM(['ACTIVE', 'MAINTAINANCE', 'INACTIVE']),

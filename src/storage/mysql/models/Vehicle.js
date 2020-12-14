@@ -18,9 +18,6 @@ Vehicle.init({
 	numberPlate: {
 		type: DataTypes.STRING,
 		unique: true,
-	},
-	vehicleTypeId: {
-		type: DataTypes.INTEGER,
 	}
 }, {
 	sequelize: SQLWrite,

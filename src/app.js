@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import logger from 'morgan';
 import routes from './routes';
+import { v1Routes } from './routes/v1';
 
 const app = express();
 app.disable('x-powered-by');
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/', routes);
+app.use('/v1', v1Routes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

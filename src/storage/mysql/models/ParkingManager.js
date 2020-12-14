@@ -11,12 +11,9 @@ ParkingManager.init({
 		allowNull: false,
 		autoIncrement: true,
 	},
-	name: {
-		type: DataTypes.STRING(20),
-	},
 	userId: {
 		type: DataTypes.INTEGER,
-	}
+	},
 }, {
 	sequelize: SQLWrite,
 	tableName: 'parking_managers',
