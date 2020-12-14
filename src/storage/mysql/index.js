@@ -1,15 +1,6 @@
 import Sequelize from 'sequelize';
 import { sequelizeOptions } from './configs';
 
-const sequelizeRead = new Sequelize(
-	process.env.SQL_WRITE_DATABASE,
-	process.env.SQL_READ_USERNAME,
-	process.env.SQL_READ_PASSWORD,
-	{
-		...sequelizeOptions,
-	}
-);
-
 const sequelizeWrite = new Sequelize(
 	process.env.SQL_WRITE_DATABASE,
 	process.env.SQL_WRITE_USERNAME,
@@ -20,6 +11,5 @@ const sequelizeWrite = new Sequelize(
 );
 
 export {
-	sequelizeRead as sqlReadConnection,
-	sequelizeWrite as sqlWriteConnection
+	sequelizeWrite as SQLWrite
 };

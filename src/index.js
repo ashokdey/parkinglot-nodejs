@@ -1,3 +1,5 @@
+import { UserVehicleMapping } from './storage/mysql/models/UserVehicleMapping';
+
 /* eslint-disable no-console */
 (async () => {
 	// require the config file
@@ -5,10 +7,8 @@
 	const app = require('./app').default;
 	// Import DB connections
 	const {
-		sqlReadConnection,
-		sqlWriteConnection
+		SQLWrite,
 	} = require('./storage/mysql');
-
 
 	const { PORT = 8080 } = process.env;
 	// eslint-disable-next-line no-console
@@ -18,13 +18,18 @@
 			/**
 			 * Storage connections
 			 */
-			await sqlReadConnection.authenticate();
-			console.info('Read DB connected succefully!');
+			// await SQLRead.authenticate();
+			// console.info('Read DB connected succefully!');
 
-			// connect to the write DB
-			await sqlWriteConnection.authenticate();
-			console.info('Write DB connected succefully!');
-			console.info(`Listening on port ${PORT}...`);
+			// // connect to the write DB
+			// await SQLWrite.authenticate();
+			// console.info('Write DB connected succefully!');
+			// console.info(`Listening on port ${PORT}...`);
+
+			// sync the DB
+			await SQLWrite.sync();
+
+			UserVehicleMapping.findAll();
 		} catch (err) {
 			// eslint-disable-next-line no-console
 			console.error(err);
