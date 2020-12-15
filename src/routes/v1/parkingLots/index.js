@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ParkingLot } from '../../../storage/mysql/models/ParkingLot';
 import { ParkingSlot } from '../../../storage/mysql/models/ParkingSlot';
+import { ParkingManagerParkingLotMapping } from '../../../storage/mysql/models/ParkingManagerParkingLotMapping';
 
 
 export const parkingLotRoutes = Router();
@@ -8,7 +9,7 @@ export const parkingLotRoutes = Router();
 parkingLotRoutes.post('/', async (req, res, next) => {
 	/** create the parking lots */
 	try {
-		const { slotSize } = req.body;
+		const { parkingManagerId, slotSize } = req.body;
 		const parkingLot = await ParkingLot.create({
 			slotSize
 		});
@@ -20,6 +21,13 @@ parkingLotRoutes.post('/', async (req, res, next) => {
 			arr.push({ parkingLotId, slotNumber: `P0${i}` });
 		}
 		await ParkingSlot.bulkCreate(arr);
+
+		/** Assign the parking lot to the manager */
+		await ParkingManagerParkingLotMapping.create({
+			parkingManagerId,
+			parkingLotId,
+		});
+
 		return res.status(201).json({ parkingLot });
 	} catch (err) {
 		return next(new Error(err));
