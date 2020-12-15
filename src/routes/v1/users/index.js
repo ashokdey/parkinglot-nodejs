@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { User } from '../../../storage/mysql/models/User';
 import { ParkingManager } from '../../../storage/mysql/models/ParkingManager';
-import { UserVehicleMapping } from '../../../storage/mysql/models/UserVehicleMapping';
 
 export const userRoutes = Router();
 
@@ -26,20 +25,10 @@ userRoutes.post('/managers', async (req, res, next) => {
 		const manager = await ParkingManager.create({
 			userId
 		});
+		/** TODO: join with user data and send */
 		return res.status(201).json({ manager });
 	} catch (err) {
 		next(new Error(err));
-	}
-});
-
-userRoutes.post('/purchases/vehicles', async (req, res, next) => {
-	/** create a vehicle for the user and return the response */
-	try {
-		const { vehicleId, userId } = req.body;
-		await UserVehicleMapping({ vehicleId, userId });
-		return res.status(201).json({ msg: 'success' });
-	} catch (err) {
-		return next(new Error(err));
 	}
 });
 
