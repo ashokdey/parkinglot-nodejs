@@ -13,6 +13,7 @@ ParkingManager.init({
 	},
 	userId: {
 		type: DataTypes.INTEGER,
+		unique: true,
 	},
 	created_at: {
 		type: 'TIMESTAMP',

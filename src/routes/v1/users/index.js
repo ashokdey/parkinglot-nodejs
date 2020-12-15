@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { User } from '../../../storage/mysql/models/User';
-import { ParkingManager } from '../../../storage/mysql/models/ParkingManager';
 
 export const userRoutes = Router();
 
+/** create a new user */
 userRoutes.post('/', async (req, res, next) => {
 	/** get the name and adhar card number of a user and register him */
 	try {
@@ -18,20 +18,7 @@ userRoutes.post('/', async (req, res, next) => {
 	}
 });
 
-userRoutes.post('/managers', async (req, res, next) => {
-	/** create a new manager using user id and adhar number */
-	try {
-		const { userId } = req.body;
-		const manager = await ParkingManager.create({
-			userId
-		});
-		/** TODO: join with user data and send */
-		return res.status(201).json({ manager });
-	} catch (err) {
-		next(new Error(err));
-	}
-});
-
+/** fetch all the users */
 userRoutes.get('/', async (req, res, next) => {
 	/** get all the users */
 	try {

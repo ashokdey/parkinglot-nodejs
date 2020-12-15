@@ -18,6 +18,7 @@ Vehicle.init({
 	numberPlate: {
 		type: DataTypes.STRING,
 		unique: true,
+		allowNull: false,
 	}
 }, {
 	sequelize: SQLWrite,

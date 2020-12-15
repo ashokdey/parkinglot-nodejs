@@ -12,7 +12,7 @@ ParkingSlot.init({
 		allowNull: false,
 		autoIncrement: true,
 	},
-	slotNumber: DataTypes.INTEGER,
+	slotNumber: DataTypes.STRING,
 	slotStatus: {
 		type: DataTypes.ENUM(['FREE', 'BOOKED']),
 		defaultValue: 'FREE',

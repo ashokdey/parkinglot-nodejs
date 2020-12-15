@@ -4,8 +4,8 @@ import { UserVehicleMapping } from '../../../storage/mysql/models/UserVehicleMap
 
 export const vehiclesRoutes = Router();
 
+/** create a new vehicle */
 vehiclesRoutes.post('/', async (req, res, next) => {
-	/** create a new vehicle */
 	try {
 		const { name, model, numberPlate, vehicleTypeId, ownerId, } = req.body;
 
@@ -27,8 +27,8 @@ vehiclesRoutes.post('/', async (req, res, next) => {
 	}
 });
 
+/** fetch all the vehicles */
 vehiclesRoutes.get('/', async (req, res, next) => {
-	/** fetch all the vehicles */
 	try {
 		const vehicles = await Vehicle.findAll();
 		return res.status(200).json({ vehicles });
