@@ -2,6 +2,7 @@
 (async () => {
 	// require the config file
 	require('dotenv').config();
+	require('./storage/mysql/models');
 	const app = require('./app').default;
 	// Import DB connections
 	const {

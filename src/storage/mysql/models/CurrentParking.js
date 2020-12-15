@@ -26,7 +26,7 @@ CurrentParking.init({
 		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
 	},
 	releaseTime: {
-		type: 'TIMESTAMP',
+		type: DataTypes.DATE,
 		allowNull: true,
 		defaultValue: null,
 	},
