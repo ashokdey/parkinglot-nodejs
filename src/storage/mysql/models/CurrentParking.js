@@ -24,7 +24,6 @@ CurrentParking.init({
 	parkingSlotId: DataTypes.INTEGER,
 	parkingTime: {
 		type: DataTypes.DATE,
-		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
 	},
 	releaseTime: {
 		type: DataTypes.DATE,
