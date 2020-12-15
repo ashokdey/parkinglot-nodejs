@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import Sequelize from 'sequelize';
+
 import { ParkingSlot } from '../../../storage/mysql/models/ParkingSlot';
 import { ParkingLot } from '../../../storage/mysql/models/ParkingLot';
 import { CurrentParking } from '../../../storage/mysql/models/CurrentParking';
@@ -23,6 +25,14 @@ parkingRoutes.post('/', async (req, res, next) => {
 		});
 
 		if (!parkingLot) { return res.status(400).json({ message: 'parking lot is not in operation' }) }
+
+		/** check if parking can be done */
+		const parkingLotSlotSize = parkingLot.getDataValue('slotSize');
+		const parkingLotBookedSlots = parkingLot.getDataValue('bookedSlots');
+
+		if (parkingLotBookedSlots === parkingLotSlotSize) {
+			return res.status(422).json({ message: 'Parking lot is full' });
+		}
 
 		/** Find nearest parking slot using the parking lot id*/
 		const parkingSlot = await ParkingSlot.findOne({
@@ -49,13 +59,21 @@ parkingRoutes.post('/', async (req, res, next) => {
 
 		/** create an entry in current parkings */
 		const currentParkingDetails = {
-			tokenId: parkingToken,
+			token: parkingToken,
 			vehicleId,
 			parkingLotId,
 			parkingSlotId,
 		}
 		await CurrentParking.create(currentParkingDetails);
 
+		/** update the booking count of parking lot */
+		ParkingLot.update({
+			bookedSlots: Sequelize.literal('booked_slots + 1')
+		}, {
+			where: {
+				id: parkingLotId
+			}
+		});
 		/** return a token */
 		return res.status(201).json({ parkingToken });
 	} catch (err) {
@@ -64,31 +82,56 @@ parkingRoutes.post('/', async (req, res, next) => {
 });
 
 /** receiave a token and un-park the vehicle */
-parkingRoutes.post('/unpark/parkingLotId', async (req, res, next) => {
-	/** create a new parking */
-
-	/**
-	 * get token
-	 * find the details from current parking using token
-	 * find the nearest parking slot using Parking Id
-	 * create a parking using the parking slot
-	 * return the FEES, slotDetails and parking lot details
-	 */
+parkingRoutes.post('/unpark', async (req, res, next) => {
 	try {
 		const { token } = req.body;
 
+		if (!token) { return res.status(400).json({ message: 'token is required' }) }
+
 		/** Find parking using the token */
+		const parking = await CurrentParking.findOne({
+			where: {
+				token
+			}
+		});
 
 		/** handle bad cases */
+		if (!parking) { return res.status(404).json({ message: 'Token not found ' }) }
+
+		const parkingLotId = parking.getDataValue('parkingLotId');
+		const parkingSlotId = parking.getDataValue('parkingSlotId');
+		const parkingTime = parking.getDataValue('parkingTime');
+
+		/** decrease the count of parking lot */
+		const parkingLot = await ParkingLot.findOne({ where: { id: parkingLotId } });
+
+		/** find the slot and decrease the count only if it's greater than 0 */
+		if (parkingLot) {
+			const bookedSlots = parkingLot.getDataValue('bookedSlots');
+			if (bookedSlots > 0) {
+				await ParkingLot.update({
+					bookedSlots: Sequelize.literal('booked_slots - 1')
+				}, {
+					where: {
+						id: parkingLotId
+					}
+				});
+			}
+		}
 
 		/** clean the parking slot and mark as FREE */
-
-		/** decrease the count of parking slot used */
-
+		await ParkingSlot.update({
+			slotStatus: PARKING_SLOT_STATUS.FREE,
+			vehicleId: null
+		}, {
+			where: {
+				id: parkingSlotId,
+			}
+		});
 		/** calculate fees */
+		console.log({ parkingTime });
 
 		/** return the fees */
-
 		return res.status(201).json({});
 	} catch (err) {
 		return next(new Error(err));

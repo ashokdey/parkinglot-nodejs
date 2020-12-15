@@ -14,7 +14,10 @@ CurrentParking.init({
 		allowNull: false,
 		autoIncrement: true,
 	},
-	tokenId: DataTypes.STRING,
+	token: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
 	vehicleId: DataTypes.INTEGER,
 	parkingLotId: DataTypes.INTEGER,
 	parkingSlotId: DataTypes.INTEGER,
@@ -24,6 +27,8 @@ CurrentParking.init({
 	},
 	releaseTime: {
 		type: 'TIMESTAMP',
+		allowNull: true,
+		defaultValue: null,
 	},
 	created_at: {
 		type: 'TIMESTAMP',
