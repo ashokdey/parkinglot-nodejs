@@ -27,7 +27,6 @@ ParkingManager.init({
 }, {
 	sequelize: SQLWrite,
 	tableName: 'parking_managers',
-	timestamps: true,
 	underscored: true,
 });
 

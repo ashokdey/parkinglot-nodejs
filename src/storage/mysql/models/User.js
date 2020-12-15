@@ -30,6 +30,6 @@ User.init({
 	sequelize: SQLWrite,
 	freezeTableName: true,
 	tableName: 'users',
-	timestamps: true,
+	timestamps: false,
 	underscored: true,
 });

@@ -31,7 +31,6 @@ ParkingManagerParkingLotMapping.init({
 }, {
 	sequelize: SQLWrite,
 	tableName: 'parking_lot_parking_manager_mappings',
-	timestamps: true,
 	underscored: true,
 });
 

@@ -23,6 +23,5 @@ Vehicle.init({
 	sequelize: SQLWrite,
 	freezeTableName: true,
 	tableName: 'vehicles',
-	timestamps: true,
 	underscored: true,
 });

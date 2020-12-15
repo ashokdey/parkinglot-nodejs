@@ -34,7 +34,6 @@ ParkingSlot.init({
 }, {
 	sequelize: SQLWrite,
 	tableName: 'parking_slots',
-	timestamps: true,
 	underscored: true,
 });
 

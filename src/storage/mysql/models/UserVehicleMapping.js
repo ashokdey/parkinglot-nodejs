@@ -21,7 +21,6 @@ UserVehicleMapping.init({
 	sequelize: SQLWrite,
 	freezeTableName: true,
 	tableName: 'users_vehicles_mappings',
-	timestamps: true,
 	underscored: true,
 })
 

@@ -46,7 +46,9 @@ userRoutes.post('/purchases/vehicles', async (req, res, next) => {
 userRoutes.get('/', async (req, res, next) => {
 	/** get all the users */
 	try {
-		const users = await User.findAll();
+		const users = await User.findAll({
+			attributes: { exclude: ['created_at', 'updated_at'] },
+		});
 		res.status(200).json({ users });
 	} catch (err) {
 		next(new Error(err));

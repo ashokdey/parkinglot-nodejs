@@ -38,7 +38,6 @@ CurrentParking.init({
 }, {
 	sequelize: SQLWrite,
 	tableName: 'current_parkings',
-	timestamps: true,
 	underscored: true,
 });
 
