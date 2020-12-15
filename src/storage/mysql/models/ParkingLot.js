@@ -1,5 +1,6 @@
 import Sequelize, { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '../index';
+import { PARKING_LOT_STATUS } from '../../../constants';
 
 export class ParkingLot extends Model { }
 
@@ -17,8 +18,12 @@ ParkingLot.init({
 		defaultValue: 0,
 	},
 	mode: {
-		type: DataTypes.ENUM(['ACTIVE', 'MAINTAINANCE', 'INACTIVE']),
-		defaultValue: 'ACTIVE',
+		type: DataTypes.ENUM([
+			PARKING_LOT_STATUS.ACTIVE,
+			PARKING_LOT_STATUS.MAINTAINANCE,
+			PARKING_LOT_STATUS.INACTIVE
+		]),
+		defaultValue: PARKING_LOT_STATUS.ACTIVE,
 	},
 	created_at: {
 		type: 'TIMESTAMP',

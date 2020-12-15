@@ -3,11 +3,12 @@ import { ParkingSlot } from '../../../storage/mysql/models/ParkingSlot';
 import { ParkingLot } from '../../../storage/mysql/models/ParkingLot';
 import { CurrentParking } from '../../../storage/mysql/models/CurrentParking';
 import { randomString } from '../../../utils';
+import { PARKING_LOT_STATUS, PARKING_SLOT_STATUS } from '../../../constants';
 
 
 export const parkingRoutes = Router();
 
-parkingRoutes.post('/park/', async (req, res, next) => {
+parkingRoutes.post('/', async (req, res, next) => {
 	try {
 		const { parkingLotId, vehicleId } = req.body;
 
@@ -17,30 +18,30 @@ parkingRoutes.post('/park/', async (req, res, next) => {
 		const parkingToken = randomString();
 		/** find the parking lot using Active status */
 		const parkingLot = await ParkingLot.findOne({
-			where: { id: parkingLotId, mode: 'ACTIVE' },
+			where: { id: parkingLotId, mode: PARKING_LOT_STATUS.ACTIVE },
 		});
 
 		if (!parkingLot) { return res.status(400).json({ message: 'parking lot is not in operation' }) }
 
 		/** Find nearest parking slot using the parking lot id*/
-		const parkingSlot = await ParkingSlot.findAll({
+		const parkingSlot = await ParkingSlot.findOne({
 			where: {
 				id: parkingLotId,
-				slotStatus: 'FREE'
+				slotStatus: PARKING_SLOT_STATUS.FREE
 			},
-			order: {
-				id: 'ASC'
-			},
+			order: [
+				['id', 'asc'],
+			],
 			limit: 1
 		});
 
 		if (!parkingSlot) { return res.status(422).json({ message: 'Slots are not available' }) }
-		const parkingSlotId = parkingSlot.id;
+		const parkingSlotId = parkingSlot.getDataValue('id');
 
 		/** Park the vehicle in the slot */
 		const newParking = await ParkingSlot.findOne({ where: { id: parkingSlotId } });
 		await newParking.update({
-			slotStatus: 'BOOK',
+			slotStatus: PARKING_SLOT_STATUS.BOOKED,
 			vehicleId,
 			parkingLotId
 		});

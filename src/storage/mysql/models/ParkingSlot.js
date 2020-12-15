@@ -1,5 +1,6 @@
 import Sequelize, { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '..';
+import { PARKING_SLOT_STATUS } from '../../../constants';
 import { ParkingLot } from './ParkingLot';
 import { Vehicle } from './Vehicle';
 
@@ -14,8 +15,11 @@ ParkingSlot.init({
 	},
 	slotNumber: DataTypes.STRING,
 	slotStatus: {
-		type: DataTypes.ENUM(['FREE', 'BOOKED']),
-		defaultValue: 'FREE',
+		type: DataTypes.ENUM([
+			PARKING_SLOT_STATUS.BOOKED,
+			PARKING_SLOT_STATUS.FREE
+		]),
+		defaultValue: PARKING_SLOT_STATUS.FREE,
 	},
 	vehicleId: {
 		type: DataTypes.INTEGER,
