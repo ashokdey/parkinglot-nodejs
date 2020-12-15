@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize';
 import { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '..';
+import { CURRENT_PARKING_STATUS } from '../../../constants';
 import { ParkingLot } from './ParkingLot';
 import { ParkingSlot } from './ParkingSlot';
 import { Vehicle } from './Vehicle';
@@ -29,6 +30,17 @@ CurrentParking.init({
 		type: DataTypes.DATE,
 		allowNull: true,
 		defaultValue: null,
+	},
+	fees: {
+		type: DataTypes.FLOAT,
+		allowNull: true
+	},
+	status: {
+		type: DataTypes.ENUM([
+			CURRENT_PARKING_STATUS.PARKED,
+			CURRENT_PARKING_STATUS.UNPARKED,
+		]),
+		defaultValue: CURRENT_PARKING_STATUS.PARKED
 	},
 	created_at: {
 		type: 'TIMESTAMP',
