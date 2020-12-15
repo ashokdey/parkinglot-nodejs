@@ -17,7 +17,7 @@ parkingLotRoutes.post('/', async (req, res, next) => {
 		// create parking slots
 		const arr = [];
 		for (let i = 0; i < slotSize; i += 1) {
-			arr.push({ parkingLotId });
+			arr.push({ parkingLotId, slotNumber: `P0${i}` });
 		}
 		await ParkingSlot.bulkCreate(arr);
 		return res.status(201).json({ parkingLot });
