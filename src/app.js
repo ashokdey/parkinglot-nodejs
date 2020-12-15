@@ -1,6 +1,9 @@
 import express from 'express';
 import path from 'path';
 import logger from 'morgan';
+import cors from 'cors';
+import helmet from 'helmet';
+
 import routes from './routes';
 import { v1Routes } from './routes/v1';
 
@@ -17,6 +20,9 @@ app.use(logger('dev', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(cors());
+app.use(helmet());
 
 // Routes
 app.use('/', routes);
