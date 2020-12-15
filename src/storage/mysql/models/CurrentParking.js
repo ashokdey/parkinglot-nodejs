@@ -14,7 +14,7 @@ CurrentParking.init({
 		allowNull: false,
 		autoIncrement: true,
 	},
-	tokenId: DataTypes.INTEGER,
+	tokenId: DataTypes.STRING,
 	vehicleId: DataTypes.INTEGER,
 	parkingLotId: DataTypes.INTEGER,
 	parkingSlotId: DataTypes.INTEGER,

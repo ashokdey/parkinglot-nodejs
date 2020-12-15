@@ -8,6 +8,7 @@ import { PARKING_LOT_STATUS, PARKING_SLOT_STATUS } from '../../../constants';
 
 export const parkingRoutes = Router();
 
+/** create a parking and return token */
 parkingRoutes.post('/', async (req, res, next) => {
 	try {
 		const { parkingLotId, vehicleId } = req.body;
@@ -62,6 +63,7 @@ parkingRoutes.post('/', async (req, res, next) => {
 	}
 });
 
+/** receiave a token and un-park the vehicle */
 parkingRoutes.post('/unpark/parkingLotId', async (req, res, next) => {
 	/** create a new parking */
 
@@ -88,22 +90,6 @@ parkingRoutes.post('/unpark/parkingLotId', async (req, res, next) => {
 		/** return the fees */
 
 		return res.status(201).json({});
-	} catch (err) {
-		return next(new Error(err));
-	}
-});
-
-parkingRoutes.get('/:parkingLotId/slots', async (req, res, next) => {
-	/** fetch all the parking slots details of a parking lot */
-	try {
-		const { parkingLotId } = req.params;
-		/** fetch all the slots of the parking lot */
-		const parkingSlots = await ParkingSlot.findAll({
-			where: {
-				parkingLotId,
-			}
-		});
-		return res.status(200).json({ parkingSlots });
 	} catch (err) {
 		return next(new Error(err));
 	}
