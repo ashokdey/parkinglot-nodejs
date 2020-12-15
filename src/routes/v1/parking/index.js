@@ -27,7 +27,7 @@ parkingRoutes.post('/', async (req, res, next) => {
 		/** Find nearest parking slot using the parking lot id*/
 		const parkingSlot = await ParkingSlot.findOne({
 			where: {
-				id: parkingLotId,
+				parkingLotId,
 				slotStatus: PARKING_SLOT_STATUS.FREE
 			},
 			order: [
