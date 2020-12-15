@@ -38,14 +38,25 @@ parkingLotRoutes.patch('/:parkingLotId', async (req, res, next) => {
 	/** create the parking lots */
 	try {
 		const { parkingLotId } = req.params;
-		const { mode } = req.body;
+		const { mode, managerId } = req.body;
+
+		/** Find the parking lot if the given manager */
+		let parkingLot = await ParkingManagerParkingLotMapping.findOne({
+			where: {
+				parkingLotId,
+				parkingManagerId: managerId
+			}
+		});
+
+		if (!parkingLot) { return res.status(404).json({ message: 'Parking lot not found ' }) }
 
 		await ParkingLot.update(
 			{ mode, },
 			{ where: { id: parkingLotId } }
 		);
 
-		const parkingLot = await ParkingLot.findOne({ id: parkingLotId });
+		/** fetch the details and return */
+		parkingLot = await ParkingLot.findOne({ id: parkingLotId });
 		return res.status(200).json({ parkingLot });
 	} catch (err) {
 		return next(new Error(err));
@@ -62,16 +73,24 @@ parkingLotRoutes.get('/', async (req, res, next) => {
 	}
 });
 
-parkingLotRoutes.get('/:parkingLotId', async (req, res, next) => {
-	/** fetch all the details of the parking lot using given id */
+parkingLotRoutes.get('/:managerId/', async (req, res, next) => {
+	/** fetch all the details of the parking lot of the given manager id */
 	try {
-		const { parkingLotId } = req.params;
+		const { managerId } = req.params;
+
+		/** find all the paprking lot of the manager */
+		const parkingLotIds = await ParkingManagerParkingLotMapping.findAll({
+			where: {
+				parkingManagerId: managerId
+			}
+		});
 
 		const parkingLot = await ParkingLot.findOne({
 			where: {
-				id: parkingLotId,
+				id: parkingLotIds,
 			}
 		});
+
 		return res.status(200).json({ parkingLot });
 	} catch (err) {
 		return next(new Error(err));
