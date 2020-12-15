@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import Sequelize, { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '../index';
 
 export class ParkingLot extends Model { }
@@ -20,6 +20,16 @@ ParkingLot.init({
 		type: DataTypes.ENUM(['ACTIVE', 'MAINTAINANCE', 'INACTIVE']),
 		defaultValue: 'ACTIVE',
 	},
+	created_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	},
+	updated_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	}
 }, {
 	sequelize: SQLWrite,
 	freezeTableName: true,

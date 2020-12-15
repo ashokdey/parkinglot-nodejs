@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import Sequelize, { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '..';
 import { ParkingLot } from './ParkingLot';
 import { ParkingManager } from './ParkingManager';
@@ -17,6 +17,16 @@ ParkingManagerParkingLotMapping.init({
 	},
 	parkingLotId: {
 		type: DataTypes.INTEGER,
+	},
+	created_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	},
+	updated_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
 	}
 }, {
 	sequelize: SQLWrite,

@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import Sequelize, { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '..';
 import { User } from './User';
 
@@ -14,6 +14,16 @@ ParkingManager.init({
 	userId: {
 		type: DataTypes.INTEGER,
 	},
+	created_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	},
+	updated_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	}
 }, {
 	sequelize: SQLWrite,
 	tableName: 'parking_managers',

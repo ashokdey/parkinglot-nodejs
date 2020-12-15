@@ -1,9 +1,9 @@
+import Sequelize from 'sequelize';
 import { Model, DataTypes } from 'sequelize';
 import { SQLWrite } from '..';
 import { ParkingLot } from './ParkingLot';
 import { ParkingSlot } from './ParkingSlot';
 import { Vehicle } from './Vehicle';
-import { Token } from './Token';
 
 export class CurrentParking extends Model { }
 
@@ -18,8 +18,23 @@ CurrentParking.init({
 	vehicleId: DataTypes.INTEGER,
 	parkingLotId: DataTypes.INTEGER,
 	parkingSlotId: DataTypes.INTEGER,
-	parkingTime: DataTypes.DATE,
-	releaseTime: DataTypes.DATE,
+	parkingTime: {
+		type: DataTypes.DATE,
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+	},
+	releaseTime: {
+		type: 'TIMESTAMP',
+	},
+	created_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	},
+	updated_at: {
+		type: 'TIMESTAMP',
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+		allowNull: false
+	}
 }, {
 	sequelize: SQLWrite,
 	tableName: 'current_parkings',
@@ -30,4 +45,3 @@ CurrentParking.init({
 CurrentParking.belongsTo(ParkingLot);
 CurrentParking.belongsTo(ParkingSlot);
 CurrentParking.belongsTo(Vehicle);
-CurrentParking.belongsTo(Token);
