@@ -24,6 +24,7 @@ CurrentParking.init({
 	parkingSlotId: DataTypes.INTEGER,
 	parkingTime: {
 		type: DataTypes.DATE,
+		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
 	},
 	releaseTime: {
 		type: DataTypes.DATE,
@@ -32,7 +33,8 @@ CurrentParking.init({
 	},
 	fees: {
 		type: DataTypes.FLOAT,
-		allowNull: true
+		allowNull: true,
+		defaultValue: null,
 	},
 	status: {
 		type: DataTypes.ENUM([
