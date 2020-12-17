@@ -25,6 +25,7 @@ ParkingSlot.init({
 		type: DataTypes.INTEGER,
 	},
 	parkingLotId: DataTypes.INTEGER,
+	isActive: DataTypes.TINYINT,
 	created_at: {
 		type: 'TIMESTAMP',
 		defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

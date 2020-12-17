@@ -1,8 +1,10 @@
 import { Router } from 'express';
+import { QueryTypes } from 'sequelize';
 import { ParkingLot } from '../../../storage/mysql/models/ParkingLot';
 import { ParkingSlot } from '../../../storage/mysql/models/ParkingSlot';
 import { ParkingManager } from '../../../storage/mysql/models/ParkingManager';
 import { ParkingManagerParkingLotMapping } from '../../../storage/mysql/models/ParkingManagerParkingLotMapping';
+import { SQLWrite } from '../../../storage/mysql';
 
 /** create a parking lot router */
 export const parkingLotRoutes = Router();
@@ -43,6 +45,29 @@ parkingLotRoutes.post('/', async (req, res, next) => {
 		});
 
 		return res.status(201).json({ parkingLot });
+	} catch (err) {
+		return next(new Error(err));
+	}
+});
+
+/** mark the slot as active/inactive */
+parkingLotRoutes.patch('/:parkingLotId/slots/:parkingSlotId', async (req, res, next) => {
+	/** fetch all the parking slots details of a parking lot */
+	try {
+		const { parkingLotId, parkingSlotId, isActive } = req.params;
+		/** fetch all the slots of the parking lot */
+
+		const query = 'UPDATE parking_slots SET is_active = ? WHERE id = ? AND parking_lot_id = ?';
+
+		await SQLWrite.query(query, {
+			type: QueryTypes.UPDATE,
+			replacements: [
+				Number(isActive),
+				parkingLotId,
+				parkingSlotId
+			]
+		});
+		return res.status(200).json({ message: 'success' });
 	} catch (err) {
 		return next(new Error(err));
 	}

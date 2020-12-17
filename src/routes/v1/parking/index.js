@@ -26,7 +26,6 @@ parkingRoutes.post('/', async (req, res, next) => {
 		});
 
 		if (!parkingLot) { return res.status(400).json({ message: 'parking lot is not in operation' }) }
-
 		/** check if parking can be done */
 		const parkingLotSlotSize = parkingLot.getDataValue('slotSize');
 		const parkingLotBookedSlots = parkingLot.getDataValue('bookedSlots');
@@ -35,23 +34,18 @@ parkingRoutes.post('/', async (req, res, next) => {
 			return res.status(422).json({ message: 'Parking lot is full' });
 		}
 
-		/** Find nearest parking slot using the parking lot id*/
 		const parkingSlot = await ParkingSlot.findOne({
 			where: {
 				parkingLotId,
-				slotStatus: PARKING_SLOT_STATUS.FREE
-			},
-			order: [
-				['id', 'asc'],
-			],
-			limit: 1
+				isActive: 1
+			}, order: ['id', 'asc'], limit: 1
 		});
 
 		if (!parkingSlot) { return res.status(422).json({ message: 'Slots are not available' }) }
 		const parkingSlotId = parkingSlot.getDataValue('id');
 
 		/** Park the vehicle in the slot */
-		const newParking = await ParkingSlot.findOne({ where: { id: parkingSlotId } });
+		const newParking = await ParkingSlot.findOne({ where: { id: parkingSlotId, isActive: 1 } });
 		await newParking.update({
 			slotStatus: PARKING_SLOT_STATUS.BOOKED,
 			vehicleId,
